@@ -1,6 +1,5 @@
 # define BOOST_TEST_MODULE all
 # include <boost/test/included/unit_test.hpp>
-# include <iostream>
 
 # include "mdArray.hpp"
 
