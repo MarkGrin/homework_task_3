@@ -11,68 +11,101 @@
 namespace mdArray
 {
 
+struct Array
+{
+    std::size_t dimensionNumber;
+    std::size_t* coordinates;
+    bool* data;
+};
+
+
 namespace
 {
-    inline bool* getElementPtr (const Array* obj, const Coordinates* size)
+
+inline bool* getElementPtr (const Array* obj, std::size_t* coordinates)
+{
+    std::size_t index = 0;
+    std::size_t step = 1;
+    for (std::size_t i = 0; i < obj->dimensionNumber; i++)
     {
-        std::size_t index = 0;
-        std::size_t step = 1;
-        for (std::size_t i = 0; i < obj->size.dimensionNumber; i++)
-        {
-            index += step * size->coordinates[i];
-            step  *= obj->size.coordinates[i];
-        }
-        return obj->data + index;
+        index += step * coordinates[i];
+        step  *= obj->coordinates[i];
     }
+    return obj->data + index;
 }
 
-std::size_t init (Array* obj, const Coordinates* size)
+}
+
+
+Array* init (std::size_t dimensionNumber, std::size_t* dimensions)
 {
-    obj->size.dimensionNumber = size->dimensionNumber;
-    obj->size.coordinates = new std::size_t[obj->size.dimensionNumber];
+    Array* obj = new Array;
+    obj->dimensionNumber = dimensionNumber;
+    obj->coordinates = new std::size_t[dimensionNumber];
 
     std::size_t allocSize = 1;
-    for (std::size_t i = 0; i < obj->size.dimensionNumber; i++)
+    for (std::size_t i = 0; i < dimensionNumber; i++)
     {
-        obj->size.coordinates[i] = size->coordinates[i];
-        allocSize *= size->coordinates[i];
+        obj->coordinates[i] = dimensions[i];
+        allocSize *= dimensions[i];
     }
     obj->data = new bool[allocSize];
 
-    return allocSize;
+    return obj;
 }
 
-std::size_t init (Array* obj, const Coordinates* size, bool initialValue)
+Array* init (std::size_t dimensionNumber, std::size_t* dimensions, bool initialValue)
 {
-    std::size_t allocSize = init (obj, size);
+    Array* obj = new Array;
+    obj->dimensionNumber = dimensionNumber;
+    obj->coordinates = new std::size_t[dimensionNumber];
+
+    std::size_t allocSize = 1;
+    for (std::size_t i = 0; i < dimensionNumber; i++)
+    {
+        obj->coordinates[i] = dimensions[i];
+        allocSize *= dimensions[i];
+    }
+    obj->data = new bool[allocSize];
 
     for (std::size_t i = 0; i < allocSize; i++)
         obj->data[i] = initialValue;
 
-    return allocSize;
+    return obj;
 }
 
 void free (Array* obj)
 {
     delete[] obj->data;
-    delete[] obj->size.coordinates;
+    delete[] obj->coordinates;
+    delete obj;
 }
 
-void write (Array* obj, const Coordinates* place, bool value)
+std::size_t getDimensionNumber (const Array* obj)
 {
-    *(getElementPtr(obj, place)) = value;
+    return obj->dimensionNumber;
 }
 
-bool read  (const Array* obj, const Coordinates* place)
+std::size_t getDimensionSize (const Array* obj, std::size_t i)
 {
-    return *(getElementPtr(obj, place));
+    return obj->coordinates[i];
+}
+
+void write (Array* obj, std::size_t* coordinates, bool value)
+{
+    *(getElementPtr(obj, coordinates)) = value;
+}
+
+bool read  (const Array* obj, std::size_t* coordinates)
+{
+    return *(getElementPtr(obj, coordinates));
 }
 
 bool isIdentical (const Array* a, const Array* b)
 {
     std::size_t size = 1;
-    for (std::size_t i = 0; i < a->size.dimensionNumber; i++)
-        size *= a->size.coordinates[i];
+    for (std::size_t i = 0; i < a->dimensionNumber; i++)
+        size *= a->coordinates[i];
 
     for (std::size_t i = 0; i < size; i++)
         if ( a->data[i] != b->data[i] )

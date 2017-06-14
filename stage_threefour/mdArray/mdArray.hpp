@@ -13,57 +13,39 @@ namespace mdArray
 {
 
 /**
- * This structure contains coordinates in any dimensional
- * space
- */
-struct Coordinates
-{
-    std::size_t dimensionNumber;
-    std::size_t* coordinates;
-};
-
-/**
  * This struct contains all data that is needed to work
  * with multidiemsional array.
  */
-struct Array
-{
-    Coordinates size;
-    bool* data;
-};
+struct Array;
 
 /**
  * This function creates multidimensional array.
  * If obj points to already created array it will be overridden.
  *
- * @param obj pointer to array
- * @param size pointer to coordinates structure that contains
- *             information about dimensions number and sizes
- *             of dimensions
+ * @param dimensionNumber number of dimensions
+ * @param dimensions array with sizes of dimensions
  *
- * @return number of elements in created array
+ * @return newly created array
  *
  * @complexity O(1)
  */
-std::size_t init (Array* obj, const Coordinates* size);
+Array* init (std::size_t dimensionNumber, std::size_t* dimensions);
 
 /**
  * This function creates multidimensional array and fills it
  * with inital values.
  * If obj points to already created array it will be overridden.
  *
- * @param obj pointer to array
- * @param size pointer to coordinates structure that contains
- *             information about dimensions number and sizes
- *             of dimensions
+ * @param dimensionNumber number of dimensions
+ * @param dimensions array with sizes of dimensions
  * @param initialValue initial value
  *
- * @return number of elements in created array
+ * @return newly created array
  *
  * @complexity O(n), where n is the result of multiplication
  *                   of sizes of all dimensions.
  */
-std::size_t init (Array* obj, const Coordinates* size, bool initialValue);
+Array* init (std::size_t dimensionNumber, std::size_t* dimensions, bool initialValue);
 
 /**
  * This function deletes any memory that was allocated by array
@@ -83,7 +65,7 @@ void free (Array* obj);
  *
  * @complexity O(1)
  */
-inline std::size_t getDimensionNumber (const Array* obj);
+std::size_t getDimensionNumber (const Array* obj);
 
 /**
  * This function returns size of array's dimension
@@ -95,30 +77,30 @@ inline std::size_t getDimensionNumber (const Array* obj);
  *
  * @complexity O(1)
  */
-inline std::size_t getDimensionSize (const Array* obj, std::size_t i);
+std::size_t getDimensionSize (const Array* obj, std::size_t i);
 
 /**
  * This function writes value to array
  *
  * @param obj array to write to
- * @param place coordinates of an element in array to write to
+ * @param coordinates array with coordinates
  * @param value value to write
  *
  * @complexity O(1)
  */
-void write (Array* obj, const Coordinates* place, bool value);
+void write (Array* obj, std::size_t* coordinates, bool value);
 
 /**
  * This function reads value from an array
  * 
  * @param obj array to read from
- * @param place coordinates of an element in array to read
+ * @param coordinates array with coordinates
  *
  * @return value that was read
  *
  * @complexity O(1)
  */
-bool read  (const Array* obj, const Coordinates* place);
+bool read  (const Array* obj, std::size_t* coordinates);
 
 /**
  * This function checks if two arrays are identical
@@ -130,20 +112,6 @@ bool read  (const Array* obj, const Coordinates* place);
  *                  of all sizes of dimensions of array
  */
 bool isIdentical (const Array* a, const Array* b);
-
-
-/*  - - - - - - - - - -  inline implementations  - - - - - - - - - -  */
-
-
-inline std::size_t getDimensionNumber (const Array* obj)
-{
-    return obj->size.dimensionNumber;
-}
-
-inline std::size_t getDimensionSize (const Array* obj, std::size_t i)
-{
-    return obj->size.coordinates[i];
-}
 
 }
 
