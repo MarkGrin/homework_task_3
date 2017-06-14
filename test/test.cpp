@@ -4,7 +4,7 @@
 
 # include "mdArray.hpp"
 
-BOOST_AUTO_TEST_CASE(all)
+BOOST_AUTO_TEST_CASE(allocationOneDimension)
 {
     {
         mdArray::Coordinates coord = {1, new size_t[1]};
@@ -20,6 +20,10 @@ BOOST_AUTO_TEST_CASE(all)
         mdArray::free (&array);
         delete[] coord.coordinates;
     }
+}
+
+BOOST_AUTO_TEST_CASE(allocationTwoDimension)
+{
     {
         mdArray::Coordinates coord = {2, new size_t[2]};
         coord.coordinates[0] = 7;
@@ -36,6 +40,10 @@ BOOST_AUTO_TEST_CASE(all)
         mdArray::free (&array);
         delete[] coord.coordinates;
     }
+}
+
+BOOST_AUTO_TEST_CASE(allocationThreeDimension)
+{
     {
         mdArray::Coordinates coord = {3, new size_t[3]};
         coord.coordinates[0] = 8;
@@ -54,7 +62,10 @@ BOOST_AUTO_TEST_CASE(all)
         mdArray::free (&array);
         delete[] coord.coordinates;
     }
+}
 
+BOOST_AUTO_TEST_CASE(ioOneDimension)
+{
     {
         mdArray::Coordinates coord = {1, new size_t[1]};
         constexpr std::size_t sizeX = 3;
@@ -80,6 +91,10 @@ BOOST_AUTO_TEST_CASE(all)
         delete[] coord.coordinates;
 
     }
+}
+
+BOOST_AUTO_TEST_CASE(ioTwoDimension)
+{
     {
         mdArray::Coordinates coord = {2, new size_t[2]};
         constexpr std::size_t sizeX = 3;
@@ -115,6 +130,10 @@ BOOST_AUTO_TEST_CASE(all)
         delete[] coord.coordinates;
 
     }
+}
+
+BOOST_AUTO_TEST_CASE(ioThreeDimension)
+{
     {
         mdArray::Coordinates coord = {3, new size_t[3]};
         constexpr std::size_t sizeX = 3;
