@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.6)
 project (TaskThree)
 include_directories ("${PROJECT_SOURCE_DIR}/mdArray")
-add_subdirectory (mdArray) 
 add_compile_options("-std=c++14" "-g" "-Wall" "-pedantic-errors")
+add_subdirectory (mdArray) 
 add_subdirectory (test)
 add_subdirectory (acme)
