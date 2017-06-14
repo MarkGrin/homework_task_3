@@ -6,7 +6,6 @@
 # include "mdArray.hpp"
 
 # include <cstddef> /* std::size_t */
-# include <iostream>
 
 namespace mdArray
 {
