@@ -6,6 +6,7 @@
 # include "mdArray.hpp"
 
 # include <cstddef> /* std::size_t */
+# include <cstring>
 
 namespace mdArray
 {
@@ -49,13 +50,23 @@ Array::Array (std::size_t dimensionNumber, const std::size_t* dimensions, bool i
     resize (dimensionNumber, dimensions, initialValue);
 }
 
-Array::Array (const Array& right) {
+Array::Array (const Array& right)
+    :
+    Array ()
+{
+    if ( this == &right )
+        return ;
+
     copy (right);
 }
+
 Array::Array (Array&& right)
     :
     Array()
 {
+    if ( this == &right )
+        return ;
+
     data_ = right.data_;
     dimensions_ = right.dimensions_;
     dimensionNumber_ = right.dimensionNumber_;
@@ -67,12 +78,18 @@ Array::Array (Array&& right)
 
 Array& Array::operator = (const Array& right)
 {
+    if ( this == &right )
+        return *this;
+
     copy (right);
     return *this;
 }
 
 Array& Array::operator = (Array&& right)
 {
+    if ( this == &right )
+        return *this;
+
     data_ = right.data_;
     dimensions_ = right.dimensions_;
     dimensionNumber_ = right.dimensionNumber_;
@@ -97,8 +114,7 @@ void Array::copy (const Array& right)
     }
     bool* newData = new bool[copySize];
     
-    for (std::size_t i = 0u; i < copySize; i++)
-        newData[i] = right.data_[i];
+    std::memcpy(newData, right.data_, copySize);
 
     delete[] data_;
     delete[] dimensions_;
@@ -148,7 +164,7 @@ void Array::free ()
 
 std::size_t Array::getDimensionSize (std::size_t i) const
 {
-    return dimensionNumber_ ? dimensions_[i] : 0u;
+    return dimensions_[i];
 }
 
 void Array::write (const std::size_t* coordinates, bool value)
@@ -163,6 +179,9 @@ bool Array::read (const std::size_t* coordinates) const
 
 bool Array::isIdentical (const Array& right) const
 {
+    if ( this == &right )
+        return right.dimensionNumber_;
+
     if ( dimensionNumber_ != right.dimensionNumber_ )
         return false;
     if ( !dimensionNumber_ )
@@ -179,11 +198,8 @@ bool Array::isIdentical (const Array& right) const
     if ( size != sizeRight )
         return false;
 
-    for (std::size_t i = 0; i < size; i++)
-        if ( data_[i] != right.data_[i] )
-            return false;
-
-    return true;
+    return memcmp (data_, right.data_, size) ? false : true;
 }
 
 } /* namespace mdArray */
+

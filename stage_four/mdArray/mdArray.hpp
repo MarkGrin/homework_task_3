@@ -17,8 +17,6 @@ namespace mdArray
  */
 class Array {
 
-    bool* getElementPtr (const std::size_t* coordinates) const;
-
     std::size_t  dimensionNumber_;
     std::size_t* dimensions_;
     bool* data_;
@@ -47,7 +45,6 @@ class Array {
     Array& operator = (const Array&);
     Array& operator = (Array&&);
 
-    void copy (const Array& right);
 
 /**
  * This function resizes array.
@@ -61,7 +58,8 @@ class Array {
  *
  * @return number of elements created
  *
- * @complexity O(1)
+ * @complexity O(n), where n is the result of multiplication
+ *                   of sizes of all dimensions.
  */
     std::size_t resize (std::size_t dimensionNumber, const std::size_t* dimensions);
 
@@ -151,16 +149,42 @@ class Array {
  * @complexity O(n) where n is the result of multiplication
  *                  of all sizes of dimensions of array
  */
-    bool isIdentical (const Array& right) const;
-
-
-/**
- * The same as calling isIdentical, but on operator form
- */
     bool operator == (const Array& right) const
     {
         return isIdentical (right);
     }
+
+/**
+ * This function checks if two arrays are not identical
+ *
+ * @return true - not identical or both invalid
+ *         false - identical
+ *
+ * @complexity O(n) where n is the result of multiplication
+ *                  of all sizes of dimensions of array
+ */
+    bool operator != (const Array& right) const
+    {
+        return ! this->operator==(right);
+    }
+
+    private:
+
+/**
+ * This function checks if two arrays are identical
+ *
+ * @return true - identical
+ *         false - different or both invalid
+ *
+ * @complexity O(n) where n is the result of multiplication
+ *                  of all sizes of dimensions of array
+ */
+    bool isIdentical (const Array& right) const;
+
+    void copy (const Array& right);
+
+    bool* getElementPtr (const std::size_t* coordinates) const;
+
 
 };
 
