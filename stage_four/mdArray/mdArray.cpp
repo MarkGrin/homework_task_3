@@ -198,7 +198,7 @@ bool Array::isIdentical (const Array& right) const
     if ( size != sizeRight )
         return false;
 
-    return memcmp (data_, right.data_, size) ? false : true;
+    return !memwcmp (data_, right.data_, size) ? false : true;
 }
 
 } /* namespace mdArray */
