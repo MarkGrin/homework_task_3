@@ -54,9 +54,6 @@ Array::Array (const Array& right)
     :
     Array ()
 {
-    if ( this == &right )
-        return ;
-
     copy (right);
 }
 
@@ -64,9 +61,6 @@ Array::Array (Array&& right)
     :
     Array()
 {
-    if ( this == &right )
-        return ;
-
     data_ = right.data_;
     dimensions_ = right.dimensions_;
     dimensionNumber_ = right.dimensionNumber_;
@@ -113,8 +107,8 @@ void Array::copy (const Array& right)
         copySize *= dimensions_[i];
     }
     bool* newData = new bool[copySize];
-    
-    std::memcpy(newData, right.data_, copySize);
+
+    std::memcpy(newData, right.data_, copySize * sizeof(newData[0]));
 
     delete[] data_;
     delete[] dimensions_;
@@ -198,7 +192,7 @@ bool Array::isIdentical (const Array& right) const
     if ( size != sizeRight )
         return false;
 
-    return !memwcmp (data_, right.data_, size) ? false : true;
+    return !memcmp (data_, right.data_, size * sizeof(data_[0]));
 }
 
 } /* namespace mdArray */
