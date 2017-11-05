@@ -1,4 +1,4 @@
-# define BOOST_TEST_MODULE all
+# define BOOST_CHECK_EQUAL_MODULE all
 # include <boost/test/included/unit_test.hpp>
 
 # include "mdArray.hpp"
@@ -10,9 +10,9 @@ BOOST_AUTO_TEST_CASE(allocationOneDimension)
         coord[0] = 5;
         mdArray::Array array (1, coord);
 
-        BOOST_TEST ( array.getDimensionNumber () == 1 );
+        BOOST_CHECK_EQUAL ( array.getDimensionNumber (), 1 );
 
-        BOOST_TEST ( array.getDimensionSize (0) == 5 );
+        BOOST_CHECK_EQUAL ( array.getDimensionSize (0), 5 );
 
         delete[] coord;
     }
@@ -26,10 +26,10 @@ BOOST_AUTO_TEST_CASE(allocationTwoDimension)
         coord[1] = 3;
         mdArray::Array array (2, coord);
 
-        BOOST_TEST ( array.getDimensionNumber () == 2 );
+        BOOST_CHECK_EQUAL ( array.getDimensionNumber (), 2 );
 
-        BOOST_TEST ( array.getDimensionSize (0) == 7 );
-        BOOST_TEST ( array.getDimensionSize (1) == 3 );
+        BOOST_CHECK_EQUAL ( array.getDimensionSize (0), 7 );
+        BOOST_CHECK_EQUAL ( array.getDimensionSize (1), 3 );
 
         delete[] coord;
     }
@@ -44,11 +44,11 @@ BOOST_AUTO_TEST_CASE(allocationThreeDimension)
         coord[2] = 7;
         mdArray::Array array (3, coord);
 
-        BOOST_TEST ( array.getDimensionNumber () == 3 );
+        BOOST_CHECK_EQUAL ( array.getDimensionNumber (), 3 );
 
-        BOOST_TEST ( array.getDimensionSize (0) == 8 );
-        BOOST_TEST ( array.getDimensionSize (1) == 4 );
-        BOOST_TEST ( array.getDimensionSize (2) == 7 );
+        BOOST_CHECK_EQUAL ( array.getDimensionSize (0), 8 );
+        BOOST_CHECK_EQUAL ( array.getDimensionSize (1), 4 );
+        BOOST_CHECK_EQUAL ( array.getDimensionSize (2), 7 );
 
         delete[] coord;
     }
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(ioOneDimension)
         for (std::size_t i = 0; i < sizeX; i++)
         {
             coord[0] = i;
-            BOOST_TEST ( array.read (coord) == values[i] );
+            BOOST_CHECK_EQUAL ( array.read (coord), values[i] );
         }
 
         delete[] coord;
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(ioTwoDimension)
             for (std::size_t j = 0; j < sizeY; j++)
             {
                 coord[1] = j;
-                BOOST_TEST ( array.read (coord) == values[j][i] );
+                BOOST_CHECK_EQUAL ( array.read (coord), values[j][i] );
             }
         }
 
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(ioThreeDimension)
                 for (std::size_t k = 0; k < sizeZ; k++)
                 {
                     coord[2] = k;
-                    BOOST_TEST ( array.read (coord) == values[k][j][i] );
+                    BOOST_CHECK_EQUAL ( array.read (coord), values[k][j][i] );
                 }
             }
         }

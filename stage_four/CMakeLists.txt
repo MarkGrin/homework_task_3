@@ -1,7 +1,19 @@
-cmake_minimum_required (VERSION 2.6)
-project (TaskThree)
-include_directories ("${PROJECT_SOURCE_DIR}/mdArray")
-add_compile_options("-std=c++14" "-g" "-Wall" "-pedantic-errors")
-add_subdirectory (mdArray) 
-add_subdirectory (unittest)
-add_subdirectory (acme)
+cmake_minimum_required(VERSION 3.6 FATAL_ERROR) # Maximum version found for CentOS
+project(taskThree)
+
+set(SUBPROJECTS
+    ${PROJECT_NAME}-mdArray
+    ${PROJECT_NAME}-acme
+    ${PROJECT_NAME}-unittest
+   )
+
+macro(find_package)
+    if(NOT "${ARGV0}" IN_LIST SUBPROJECTS)
+        _find_package(${ARGV})
+    endif()
+endmacro()
+
+foreach(subproj IN LISTS SUBPROJECTS)
+    add_subdirectory(${subproj})
+endforeach()
+
