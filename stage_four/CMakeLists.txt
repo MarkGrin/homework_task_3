@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6 FATAL_ERROR) # Maximum version found for CentOS
+cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 project(taskThree)
 
 set(SUBPROJECTS
